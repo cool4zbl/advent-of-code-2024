@@ -1,17 +1,8 @@
-from typing import List
 import collections
+from utils import read_integer_pairs
 
 # --- Day 1: Historian Hysteria ---
 
-
-def read_integer_pairs(filepath: str) -> tuple[List[int], List[int]]:
-    lst1, lst2 = [], []
-    with open(filepath, 'r') as file:
-        for line in file:
-            left, right = map(int, line.split())
-            lst1.append(left)
-            lst2.append(right)
-    return lst1, lst2
 
 def distance():
     lst1, lst2 = read_integer_pairs('./day1.txt')

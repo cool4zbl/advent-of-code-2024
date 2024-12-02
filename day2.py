@@ -1,15 +1,8 @@
-from typing import List
+from utils import read_file_to_list
 
 # --- Day 2: Red-Nosed Reports ---
 
 
-def read_file_to_list(filepath: str) -> List[int]:
-    lst = []
-    with open(filepath, 'r') as file:
-        for line in file:
-            lst.append([int(n) for n in line.strip().split(' ')])
-
-    return lst
 
 def decreasing(lst):
     return all(
