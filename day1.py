@@ -1,6 +1,9 @@
 from typing import List
 import collections
 
+# --- Day 1: Historian Hysteria ---
+
+
 def read_integer_pairs(filepath: str) -> tuple[List[int], List[int]]:
     lst1, lst2 = [], []
     with open(filepath, 'r') as file:
