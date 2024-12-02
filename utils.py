@@ -2,6 +2,7 @@ from typing import List
 
 def read_integer_pairs(filepath: str) -> tuple[List[int], List[int]]:
     lst1, lst2 = [], []
+
     with open(filepath, 'r') as file:
         for line in file:
             left, right = map(int, line.split())

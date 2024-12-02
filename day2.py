@@ -3,7 +3,6 @@ from utils import read_file_to_list
 # --- Day 2: Red-Nosed Reports ---
 
 
-
 def decreasing(lst):
     return all(
         (current > next_elem) and (1 <= (current - next_elem) <= 3)
@@ -17,14 +16,14 @@ def increasing(lst):
     ) if len(lst) > 1 else True
 
 def reports():
-    all_lst = read_file_to_list('./day2.txt')
+    all_lst = read_file_to_list('./input/day2.txt')
     count = sum(map(lambda x: 1 if decreasing(x) or increasing(x) else 0, all_lst))
     return count
 
 print('part1', reports())
 
 def reports2():
-    all_lst = read_file_to_list('./day2.txt')
+    all_lst = read_file_to_list('./input/day2.txt')
     count = 0
 
     for lst in all_lst:
