@@ -1,6 +1,6 @@
 from typing import List
 
-def read_file_to_list(filepath: str) -> tuple[List[int], List[int]]:
+def read_file_to_list(filepath: str) -> List[int]:
     lst = []
     with open(filepath, 'r') as file:
         for line in file:
