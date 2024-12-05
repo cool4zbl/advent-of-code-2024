@@ -82,7 +82,10 @@ def find_x_mas():
                 continue
             cur_board = [row[c:c+3] for row in board[r:r+3]]
             found = check_board(cur_board,
-                                [pattern_xmas, pattern_xmas_down, pattern_xmas_left, pattern_xmas_right ])
+                                [pattern_xmas,
+                                 pattern_xmas_down,
+                                 pattern_xmas_left,
+                                 pattern_xmas_right ])
             if found:
                 count += 1
 
