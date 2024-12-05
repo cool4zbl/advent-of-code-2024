@@ -10,7 +10,7 @@ def read_integer_pairs(filepath: str) -> tuple[List[int], List[int]]:
             lst2.append(right)
     return lst1, lst2
 
-def read_file_to_list(filepath: str) -> List[int]:
+def parse_file_to_int_list(filepath: str) -> List[int]:
     lst = []
     with open(filepath, 'r') as file:
         for line in file:
