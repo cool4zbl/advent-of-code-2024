@@ -1,5 +1,10 @@
+import time
 import re
 from collections import deque
+
+start_time = time.time()
+
+# --- Day 4: Ceres Search ---
 
 def parse_file_to_matrix(filepath: str):
     lst = []
@@ -20,7 +25,7 @@ def find_xmas():
             (-1, -1), (1, -1), (-1, 1), (1, 1))
 
     word = 'XMAS'
-    def backtrack(row, col, idx, dir):
+    def dfs(row, col, idx, dir):
         if idx == len(word):
             return True
 
@@ -28,19 +33,21 @@ def find_xmas():
             return False
 
         dr, dc = dir
-        if backtrack(dr + row, dc + col, idx + 1, dir):
+        if dfs(dr + row, dc + col, idx + 1, dir):
             return True
         return False
 
     for i in range(m):
         for j in range(n):
             for dir in dirs:
-                if backtrack(i, j, 0, dir):
+                if dfs(i, j, 0, dir):
                     count += 1
     return count
 
 
 print(find_xmas())
+end1 = time.time()
+print(f't = {end1 - start_time:.6f}s')
 
 def check_board(cur, boards):
     re_boards = []
@@ -83,8 +90,4 @@ def find_x_mas():
 
 
 print(find_x_mas())
-
-
-
-
-
+print(f't2 = {time.time() - end1:.6f}s')

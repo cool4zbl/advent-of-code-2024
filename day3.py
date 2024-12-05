@@ -1,5 +1,8 @@
 import re
 
+# --- Day 3: Mull It Over ---
+
+
 pattern1 = r'mul\((\d{1,3}),(\d{1,3})\)'
 pattern = r'mul\((\d{1,3}),(\d{1,3})\)|don\'t\(\)|do\(\)'
 

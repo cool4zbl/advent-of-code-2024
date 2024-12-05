@@ -5,6 +5,7 @@ from utils import read_integer_pairs
 
 
 def distance():
+    # TC: O(NlogN)
     lst1, lst2 = read_integer_pairs('./input/day1.txt')
 
     lst1.sort()
@@ -15,6 +16,7 @@ def distance():
 print(distance())
 
 def similarity():
+    # TC: O(N)
     lst1, lst2 = read_integer_pairs('./input/day1.txt')
 
     counter1 = collections.Counter(lst1)
