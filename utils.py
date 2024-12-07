@@ -17,3 +17,19 @@ def parse_file_to_int_list(filepath: str) -> List[int]:
             lst.append([int(n) for n in line.strip().split(' ')])
 
     return lst
+
+def parse_file_to_matrix(filepath: str):
+    lst = []
+    with open(filepath, 'r') as file:
+        for line in file:
+            lst.append(line.strip())
+
+    return lst
+
+def parse_file_to_2d_matrix(filepath: str):
+    lst = []
+    with open(filepath, 'r') as file:
+        for line in file:
+            lst.append(list(line.strip()))
+
+    return lst

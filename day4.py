@@ -1,18 +1,11 @@
 import time
 import re
 from collections import deque
+from utils import parse_file_to_matrix
 
 start_time = time.time()
 
 # --- Day 4: Ceres Search ---
-
-def parse_file_to_matrix(filepath: str):
-    lst = []
-    with open(filepath, 'r') as file:
-        for line in file:
-            lst.append(line.strip())
-
-    return lst
 
 
 def find_xmas():
