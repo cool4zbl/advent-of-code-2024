@@ -1,7 +1,8 @@
-from functools import lru_cache
+import time
+start_time = time.time()
 
 day = 7
-is_test = True
+is_test = False
 
 # --- Day 7: Bridge Repair ---
 
@@ -52,3 +53,4 @@ def sol(targets, all_nums):
 if __name__ == "__main__":
     targets, nums = read_input()
     print(sol(targets, nums))
+    print(f'time = {(time.time() - start_time):.6f}s')
