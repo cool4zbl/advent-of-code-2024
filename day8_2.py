@@ -27,7 +27,7 @@ for x, y in grid.keys():
         # left, right = (Decimal(str(a)) * Decimal(str(x)) + Decimal(str(b))), Decimal(str(y))
         left = a * x + b
         right = y
-        if  abs(right - left) <= 0.0002:
+        if abs(right - left) <= 0.0002:
             total += 1
             break
 
