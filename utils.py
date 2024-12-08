@@ -33,3 +33,7 @@ def parse_file_to_2d_matrix(filepath: str):
             lst.append(list(line.strip()))
 
     return lst
+
+def print_board(board):
+    for line in board:
+        print(''.join(line))
