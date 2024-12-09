@@ -1,3 +1,6 @@
+import time
+start_time = time.time()
+
 from collections import defaultdict
 from utils import parse_file_to_2d_matrix, print_board
 
@@ -34,7 +37,9 @@ for antenna, poss in all_antennas.items():
 
 print(total)
 
-mat = parse_file_to_2d_matrix('./input/day8_test.txt')
-for x, y in uniq_antis:
-    mat[x][y] = '#'
-print_board(mat)
+# mat = parse_file_to_2d_matrix('./input/day8_test.txt')
+# for x, y in uniq_antis:
+#     mat[x][y] = '#'
+# print_board(mat)
+
+print(f't2 = {time.time() - start_time:.6f}s')
