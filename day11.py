@@ -23,19 +23,17 @@ def process(num, ts):
         return cache[num][ts]
 
     if num == '0':
-        cache[num][ts] = process('1', ts - 1)
-        return cache[num][ts]
+        stones = process('1', ts - 1)
 
-    if len(num) % 2 == 0:
+    elif len(num) % 2 == 0:
         mid = len(num) // 2
         n1, n2 = remove_leading_zero(num[:mid]), remove_leading_zero(num[mid:])
         stones = process(n1, ts - 1) + process(n2, ts - 1)
-        cache[num][ts] = stones
     else:
         temp = str(int(num) * 2024)
         stones = process(temp, ts - 1)
-        cache[num][ts] = stones
 
+    cache[num][ts] = stones
     return cache[num][ts]
 
 @lru_cache(maxsize=None)
@@ -62,7 +60,7 @@ def main():
 
     times = 75
     init_lst = read_input(input_file)
-    total = sum(process_with_cache(num, times) for num in init_lst)
+    total = sum(process(num, times) for num in init_lst)
     print(total)
     print(f'time spent = {time.time() - start_time:.6f} seconds')
 
