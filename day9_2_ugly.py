@@ -27,6 +27,7 @@ for i, c in enumerate(long_str):
 
 # print(r)
 
+# optimize below
 left, right = 0, len(r) - 1
 right = len(r) - 1
 while right > 0:
@@ -43,6 +44,7 @@ while right > 0:
             break
     right -= 1
 
+# optimize above
 
 total = 0
 for i in range(len(r)):

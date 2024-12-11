@@ -4,7 +4,11 @@ start_time = time.time()
 from collections import defaultdict
 from utils import parse_file_to_2d_matrix, print_board
 
-grid = {(x, y): e for x, line in enumerate(open('./input/day8_test.txt').readlines()) for y, e in enumerate(line.strip())}
+is_test = False
+day = 8
+input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
+
+grid = {(x, y): e for x, line in enumerate(open(input_file).readlines()) for y, e in enumerate(line.strip())}
 
 all_antennas = defaultdict(list)
 
