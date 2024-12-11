@@ -1,62 +1,37 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 import time
+
 start_time = time.time()
 
-is_test = True
+is_test = False
 day = 10
 input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
 
-def parse_file(filepath: str):
-    lst = []
-    with open(filepath, 'r') as file:
-        for line in file:
-            lst.append([int(c) if c != '.' else '.' for c in list(line.strip())])
+def build_grid(ls):
+    return defaultdict(str) | {(i, j): ls[i][j] for i in range(len(ls)) for j in range(len(ls[i]))}
 
-    return lst
-
-board = parse_file(input_file)
-m, n = len(board), len(board[0])
+grid = build_grid(open(input_file, 'r').read().splitlines())
+print(f'cur g {grid} \n')
 
 dirs = ((-1, 0), (1, 0), (0, -1), (0, 1))
 
-all_zeros = defaultdict(int)
+all_zeros = [x for x in grid if grid[x] == '0']
+q = deque()
+for zero_pos in all_zeros:
+    q.append((zero_pos, zero_pos))
 
-word = '9876543210'
-def dfs(row, col, idx, dir, er, ec):
-    if idx == len(word):
-        r = row - dir[0]
-        c = col - dir[1]
-        if (r, c) != (er, ec):
-            return False
-        return True
+seen = set()
 
-    if not (0 <= row < m and 0 <= col < n and int(word[idx]) == board[row][col]):
-        return False
+while q:
+    zero_pos, (r, c) = q.popleft()
+    if grid[(r, c)] == '9':
+        seen.add((zero_pos, (r, c)))
+        continue
 
-    char = board[row][col]
-    board[row][col] = '#'
-    is_found = False
-    for dir in dirs:
-        dr, dc = dir
-        if dfs(dr + row, dc + col, idx + 1, dir, er, ec):
-            is_found = True
-            break
-    board[row][col] = char
-    return is_found
+    for dx, dy in dirs:
+        nr, nc = r + dx, c + dy
+        if (nr, nc) in grid and int(grid[nr, nc]) == int(grid[r, c]) + 1:
+            q.append((zero_pos, (nr, nc)))
 
-count = 0
-nines = set()
-for r in range(m):
-    for c in range(n):
-        if board[r][c] == 0:
-            all_zeros[(r, c)] = 0
-        if board[r][c] == 9:
-            nines.add((r, c))
-
-for r, c in all_zeros:
-    for sr, sc in nines:
-        er, ec = r, c
-        if dfs(sr, sc, 0, 0, er, ec):
-            all_zeros[(r, c)] += 1
-
-print(sum(v for v in all_zeros.values()))
+print(len(seen))
+print(f'time {time.time() - start_time:.6f}s')
