@@ -1,6 +1,8 @@
 from collections import defaultdict, deque
 import time
 
+# --- Day 12: Garden Groups ---
+
 start_time = time.time()
 
 is_test = False
@@ -22,10 +24,12 @@ def calc_perimeter(grid, path):
         for i, (dx, dy) in enumerate(dirs):
             nr, nc = r + dx, c + dy
             if not grid[nr, nc] or grid[nr, nc] != grid[r, c]:
+                # outer edges
                 edges.add((r, c, i))
 
     uniq_edges = set()
     for x, y, d in edges:
+        # merge edges
         if (x + 1, y, d) not in edges and (x, y + 1, d) not in edges:
             uniq_edges.add((x, y, d))
 
