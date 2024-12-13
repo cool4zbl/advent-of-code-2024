@@ -43,5 +43,4 @@ def sol(file):
 
 
 print(sol(input_file))
-
-
+print(f'time = {(time.time() - start_time) * 1000:.3f}ms')

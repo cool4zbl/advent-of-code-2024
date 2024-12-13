@@ -12,7 +12,7 @@ day = 5
 def sol():
     preq = []
     pages = []
-    with open(f'./input/day{day}{'_test' if is_test else ''}.txt', 'r') as file:
+    with open(f"./input/day{day}{'_test' if is_test else ''}.txt", 'r') as file:
         str = file.read()
         p1, p2 = str.split('\n\n')
 

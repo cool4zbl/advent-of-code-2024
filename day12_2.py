@@ -7,6 +7,7 @@ is_test = False
 day = 12
 input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
 
+# U,D,L,R
 dirs = ((-1, 0), (1, 0), (0, -1), (0, 1))
 
 def build_grid(ls):
@@ -14,20 +15,28 @@ def build_grid(ls):
 
 g, m, n = build_grid(open(input_file, 'r').read().splitlines())
 
-def find_non_adj(grid, r, c):
-    count = 0
-    for dx, dy in dirs:
-        nr, nc = r + dx, c + dy
-        if grid[nr, nc] and grid[nr, nc] == grid[r, c]:
-            count += 1
-    return 4 - count
+def calc_perimeter(grid, path):
+    edges = set()
+
+    for r, c in path:
+        for i, (dx, dy) in enumerate(dirs):
+            nr, nc = r + dx, c + dy
+            if not grid[nr, nc] or grid[nr, nc] != grid[r, c]:
+                edges.add((r, c, i))
+
+    uniq_edges = set()
+    for x, y, d in edges:
+        if (x + 1, y, d) not in edges and (x, y + 1, d) not in edges:
+            uniq_edges.add((x, y, d))
+
+    return len(uniq_edges)
 
 def solve(grid):
     visited = set()
     total = 0
 
     def dfs(r, c, path):
-        path.add((r, c))
+        path.append((r, c))
         visited.add((r, c))
 
         for dx, dy in dirs:
@@ -36,19 +45,16 @@ def solve(grid):
                 visited.add((nr, nc))
                 dfs(nr, nc, path)
 
-
     for r in range(m):
         for c in range(n):
             if (r, c) not in visited:
-                path = set()
+                path = []
                 dfs(r, c, path)
                 area = len(path)
-                per = 0
-                for i, j in path:
-                    per += find_non_adj(grid, i, j)
+                per = calc_perimeter(grid, path)
                 total += area * per
 
     print('total', total)
 
 solve(g)
-
+print(f'time = {(time.time() - start_time) * 1000:.3f}ms')
