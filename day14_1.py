@@ -26,12 +26,9 @@ def sol():
             vy, vx = v.split('=')[1].split(',')
             robots.append((int(r), int(c), int(vy), int(vx)))
 
-    print('robots', robots)
-
     for robot in robots:
         sr, sc, vy, vx = robot
         er, ec = (sr + times * vx) % m, (sc + times * vy) % n
-        print(er, ec)
         g[(er, ec)] += 1
 
     res = defaultdict(int)
@@ -41,9 +38,9 @@ def sol():
             continue
 
         if x > m // 2:
-            x = (x - 1)
+            x -= 1
         if y > n // 2:
-            y = (y - 1)
+            y -= 1
         quadrant = (x // (m // 2), y // (n // 2))
         res[quadrant] += v
 
