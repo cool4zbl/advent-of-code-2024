@@ -15,7 +15,7 @@ def build_grid(m, n):
 def sol():
     m, n = 103, 101
 
-    # calculate maximum product of 4 quadrants
+    # calculate maximum product of 4 quadrants?
     robots = []
     with open(input_file, 'r') as f:
         for line in f.readlines():
