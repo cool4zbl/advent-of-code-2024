@@ -3,7 +3,7 @@ import time
 start_time = time.time()
 
 day = 17
-is_test = False
+is_test = True
 input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
 
 def solve_part_1():
@@ -57,13 +57,9 @@ def solve_part_1():
                     v = get_operand(operand_p)
                     opcode_p = v
                     operand_p = opcode_p + 1
-
-                    print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}')
+                    print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}, jnz = {opcode_p}')
                     continue
-                    # if new_opcode_p != opcode_p:
-                    #     opcode_p = new_opcode_p
-                    #     operand_p = new_opcode_p + 1
-                    #     continue
+                print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}, jnz no')
             elif opcode == '4':
                 # bxc
                 register_b ^= register_c
@@ -73,7 +69,7 @@ def solve_part_1():
                 v = get_operand(operand_p)
                 format_v = ','.join(list(str(v % 8)))
                 output.append(format_v)
-                print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}')
+                print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}, output = {output})')
             elif opcode == '6':
                 # bdv
                 v = get_operand(operand_p)
@@ -85,9 +81,6 @@ def solve_part_1():
                 register_c = register_a // (2 ** v)
                 print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}')
 
-            # print('a', register_a)
-            # print('b', register_b)
-            # print('c', register_c)
             opcode_p += 2
             operand_p = opcode_p + 1
 

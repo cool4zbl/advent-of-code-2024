@@ -60,5 +60,3 @@ def sol():
 
 sol()
 print(f'{(time.time() - start_time) * 1000:.3f}ms')
-
-
