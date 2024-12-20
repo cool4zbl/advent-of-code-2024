@@ -14,6 +14,8 @@ def sol():
 
     word_dicts = set(p1)
 
+    # TODO: dp
+
     @cache
     def dfs(i, s):
         if i == 0:
