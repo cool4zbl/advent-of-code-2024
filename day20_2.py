@@ -47,8 +47,7 @@ def sol():
                     heappush(open_list, (new_score, nr, nc, idx))
         return None
 
-    best = dijkstra(sr, sc, er, ec)
-    print('best', best)
+    dijkstra(sr, sc, er, ec)
 
     path = []
     def construct_path(p, path):
@@ -64,42 +63,19 @@ def sol():
 
     # save-secs, positions
     cheats = defaultdict(set)
-    for i, (x, y) in enumerate(path):
-        for idx, (dx, dy) in enumerate(dirs):
-            x1, y1 = x + dx, y + dy
-            for j in range(i + 1, len(path)):
-                x2, y2 = path[j]
+    for i, (x1, y1) in enumerate(path):
+        for j in range(i + 1, len(path)):
+            x2, y2 = path[j]
 
-                if abs(x2 - x1) + abs(y2 - y1) <= 20:
-                    duration = abs(x2 - x1) + abs(y2 - y1)
-                    if g[x1, y1] and g[x1, y1] == '#' and g[x2, y2] and g[x2, y2] != '#':
-                        # pos = path.index((n2x, n2y))
-                        # if pos < i:
-                        #     continue
-                        # fast = pos - i - 2
-                        # TODO: fixme
-                        fast = j - i - (duration + 1)
-                        cheats[fast].add((x, y, x2, y2))
-
-    # 1813535 is wrong.
-    # print('path', path)
-    print('cheats', cheats)
+            if abs(x2 - x1) + abs(y2 - y1) <= 20:
+                duration = abs(x2 - x1) + abs(y2 - y1)
+                fast = j - i - duration
+                cheats[fast].add((x1, y1, x2, y2))
 
     total = 0
     for k, v in cheats.items():
-        if k >= 50:
-            print(k, len(v))
-        if k == 76:
-            print(k, v)
         total += len(v) if k >= 100 else 0
     print('total', total)
-    # board = [['.' for _ in range(n)] for _ in range(m)]
-    # for k, v in g.items():
-    #     x, y = k
-    #     board[x][y] = v if k not in path else 'O'
-    #
-    # for row in board:
-    #     print(''.join(row))
 
 sol()
 print(f'{(time.time() - start_time) * 1000:.3f}ms')
