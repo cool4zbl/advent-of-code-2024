@@ -24,6 +24,7 @@ def sol():
             vy, vx = v.split('=')[1].split(',')
             robots.append((int(r), int(c), int(vy), int(vx)))
 
+    # k * 103 + 51 = m * 101 + 86
     times = 7055
     # 5000 < x < 12500
     while times < 7056:

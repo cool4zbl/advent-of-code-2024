@@ -59,8 +59,8 @@ def sol():
         for j in range(i + 1, len(path)):
             x2, y2 = path[j]
 
-            if abs(x2 - x1) + abs(y2 - y1) <= 20:
-                duration = abs(x2 - x1) + abs(y2 - y1)
+            duration = abs(x2 - x1) + abs(y2 - y1)
+            if duration <= 20:
                 fast = j - i - duration
                 cheats[fast].add((x1, y1, x2, y2))
 
