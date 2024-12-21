@@ -37,3 +37,12 @@ def parse_file_to_2d_matrix(filepath: str):
 def print_board(board):
     for line in board:
         print(''.join(line))
+
+def construct_path(parents, path, start_r, start_c, end_r, end_c):
+    r, c = end_r, end_c
+    while (r, c) != (start_r, start_c):
+        path.append((r, c))
+        r, c = parents[r, c]
+    path.append((r, c))
+    path.reverse()
+    return path

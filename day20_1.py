@@ -1,5 +1,6 @@
 from collections import defaultdict, deque
 from heapq import heappush, heappop, heapify
+from utils import *
 import time
 
 start_time = time.time()
@@ -50,17 +51,8 @@ def sol():
     best = dijkstra(sr, sc, er, ec)
     print('best', best)
 
-    path = []
-    def construct_path(p, path):
-        r, c = er, ec
-        while (r, c) != (sr, sc):
-            path.append((r, c))
-            r, c = p[r, c]
-        path.append((r, c))
-        return path
 
-    construct_path(parents, path)
-    path.reverse()
+    path = construct_path(parents, [], sr, sc, er, ec)
 
     # save-secs, positions
     cheats = defaultdict(set)
@@ -79,6 +71,7 @@ def sol():
     for k, v in cheats.items():
         total += len(v) if k >= 100 else 0
     print('total', total)
+
     # board = [['.' for _ in range(n)] for _ in range(m)]
     # for k, v in g.items():
     #     x, y = k

@@ -1,5 +1,6 @@
-from collections import defaultdict, deque
+from collections import defaultdict
 from heapq import heappush, heappop, heapify
+from utils import *
 import time
 
 start_time = time.time()
@@ -34,6 +35,7 @@ def sol():
             if (r, c) in closed_set:
                 continue
             closed_set.add((r, c))
+
             if (r, c) != (sr, sc):
                 parents[r, c] = (r - dirs[d][0], c - dirs[d][1])
 
@@ -49,17 +51,7 @@ def sol():
 
     dijkstra(sr, sc, er, ec)
 
-    path = []
-    def construct_path(p, path):
-        r, c = er, ec
-        while (r, c) != (sr, sc):
-            path.append((r, c))
-            r, c = p[r, c]
-        path.append((r, c))
-        return path
-
-    construct_path(parents, path)
-    path.reverse()
+    path = construct_path(parents, [], sr, sc, er, ec)
 
     # save-secs, positions
     cheats = defaultdict(set)
