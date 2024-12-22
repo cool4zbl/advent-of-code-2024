@@ -16,6 +16,15 @@ acts = ['^', 'v', '<', '>']
 def build_grid(ls):
     return defaultdict(str) | {(i, j): ls[i][j] for i in range(len(ls)) for j in range(len(ls[i]))}, len(ls), len(ls[0])
 
+def print_board(m, n, g, path):
+    board = [['.' for _ in range(n)] for _ in range(m)]
+    for k, v in g.items():
+        x, y = k
+        board[x][y] = v if k not in path else 'O'
+
+    for row in board:
+        print(''.join(row))
+
 def sol():
 
     g, m, n = build_grid(open(input_file, 'r').read().splitlines())
@@ -72,13 +81,6 @@ def sol():
         total += len(v) if k >= 100 else 0
     print('total', total)
 
-    # board = [['.' for _ in range(n)] for _ in range(m)]
-    # for k, v in g.items():
-    #     x, y = k
-    #     board[x][y] = v if k not in path else 'O'
-    #
-    # for row in board:
-    #     print(''.join(row))
 
 sol()
 print(f'{(time.time() - start_time) * 1000:.3f}ms')
