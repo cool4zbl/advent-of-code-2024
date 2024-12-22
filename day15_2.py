@@ -1,8 +1,6 @@
 from collections import defaultdict, deque
 import time
 
-# --- Day 12: Garden Groups ---
-
 start_time = time.time()
 
 is_test = False
@@ -18,32 +16,16 @@ def build_grid(ls):
 
 def sol():
     p1, p2 = open(input_file, 'r').read().split('\n\n')
+
+    p1 = p1.replace('#', '##')
+    p1 = p1.replace('.', '..')
+    p1 = p1.replace('O', '[]')
+    p1 = p1.replace('@', '@.')
+
     lst = p1.splitlines()
-
-    g_small, m_small, n_small = build_grid(lst)
-
-    # not for test
-    board = [[] for _ in range(m_small)]
-    for i, row in enumerate(board):
-        for j in range(n_small):
-            match g_small[i, j]:
-                case '#':
-                    row.append('#')
-                    row.append('#')
-                case '.':
-                    row.append('.')
-                    row.append('.')
-                case 'O':
-                    row.append('[')
-                    row.append(']')
-                case '@':
-                    row.append('@')
-                    row.append('.')
-
-    g, m, n = build_grid(board)
+    g, m, n = build_grid(lst)
 
     sr, sc = next(k for k, v in g.items() if v == '@')
-
     r, c = sr, sc
     g[sr, sc] = '.'
 
@@ -61,6 +43,7 @@ def sol():
             return check(nr, nc, act, g)
 
         if g[nr, nc] in '[]':
+            # 这里需要先计算出当前 g[nr, nc] 的值保存起来，否则递归时 g[nr,nc] 很有可能被改变了，则计算的结果就不对了
             lr = -1 if g[nr, nc] == ']' else 1
             # 如果下一步是 [ or ], 则递归移动上面的 [, ], 如果它们都成功移动了，说明我也可以移动到下一步的位置.
             return check(nr, nc, act, g) and check(nr, nc + lr, act, g)
