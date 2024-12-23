@@ -26,7 +26,8 @@ def sol():
             for p in range(len(ll)):
                 for q in range(p + 1, len(ll)):
                     if ll[q] in connects[ll[p]] and ll[p] in connects[ll[q]]:
-                        res.add(hash(k) + hash(ll[p]) + hash(ll[q]))
+                        # res.add(hash(k) + hash(ll[p]) + hash(ll[q]))
+                        res.add(frozenset((k, ll[p], ll[q])))
 
     print('connected', len(res))
 
