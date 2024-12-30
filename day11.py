@@ -60,9 +60,10 @@ def main():
 
     times = 75
     init_lst = read_input(input_file)
-    total = sum(process(num, times) for num in init_lst)
+    # total = sum(process(num, times) for num in init_lst)
+    total = sum(process_with_cache(num, times) for num in init_lst)
     print(total)
-    print(f'time spent = {time.time() - start_time:.6f} seconds')
+    print(f'time spent = {(time.time() - start_time) * 1000:.3f} ms')
 
 if __name__ == '__main__':
     main()

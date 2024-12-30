@@ -6,7 +6,7 @@ from heapq import heapify, heappop, heappush
 
 start_time = time.time()
 
-is_test = False
+is_test = True
 day = 21
 input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
 
@@ -69,33 +69,39 @@ def sol():
             if v == char:
                 return k
 
-    cache_dir = defaultdict(str)
+    cache_dir = defaultdict(dict)
+    # @cache
+    def generate(s_e, ts):
+        if ts <= 0:
+            return ''
+        if cache_dir[s_e].get(ts):
+            return cache_dir[s_e][ts]
 
-    @cache
-    def generate(input_lst):
-        rr = 'A' + input_lst
-        res = []
-        for i in range(1, len(rr)):
+        s, e = s_e
+        sr, sc = find_pos(s, g2)
+        er, ec = find_pos(e, g2)
+        path = find_path(sr, sc, er, ec, g2)
+        path = (''.join(path)
+                .replace('<v<', 'v<<')
+                .replace('>^>', '>>^'))
+        path += 'A'
 
-            sr, sc = find_pos(rr[i - 1], g2)
-            er, ec = find_pos(rr[i], g2)
-            if (sr, sc, er, ec) in cache_dir:
-                path = cache_dir[(sr, sc, er, ec)]
+        ans = []
+        for i in range(0, len(path)):
+            if i == 0:
+                ans.append(generate(('A', path[0]), ts - 1))
             else:
-                path = find_path(sr, sc, er, ec, g2)
-                # print(''.join(sorted(path)) + 'A', (sr, sc), 'to', (er, ec))
-                path = (''.join(path)
-                        .replace('<v<', 'v<<')
-                        .replace('>^>', '>>^'))
-                cache_dir[(sr, sc, er, ec)] = path
-            res.append(path + 'A')
-        return ''.join(res)
+                ans.append(generate((path[i-1], path[i]), ts - 1))
+
+        cache_dir[s_e][ts] = path
+        print('ans', ans)
+        return ''.join(ans)
 
     total = 0
     for line in open(input_file).read().splitlines():
         ss = 'A' + line
 
-        res = []
+        res0 = []
         for i in range(1, len(ss)):
             sr, sc = find_pos(ss[i-1], g)
             er, ec = find_pos(ss[i], g)
@@ -117,22 +123,25 @@ def sol():
                     .replace('<^^^<', '^^^<<')
                     .replace('<^^<', '^^<<'))
 
-            res.append(path + 'A')
+            res0.append(path + 'A')
 
-        res = ['<<^^A' if x == '^^<<A' and i > 0 else x for i, x in enumerate(res)]
-        print(res)
-        res = ''.join(res)
+        res0 = ['<<^^A' if x == '^^<<A' and i > 0 else x for i, x in enumerate(res0)]
+        print(res0)
 
-        next_output = res
-        for i in range(2):
-            next_output = generate(next_output)
-            print(next_output)
+        times = 2
+        res = []
+        res0 = 'A' + ''.join(res0)
+        for i in range(1, len(res0)):
+            next_output = generate((res0[i-1], res0[i]), times)
+            res.append(next_output)
 
-        length = len(next_output)
+        length = len(''.join(res))
         num = int(ss[1:4])
-        print(length, num, next_output)
+        print(length, num, res)
         total += length * num
-        print(total)
+
+    print(cache_dir)
+    print(total)
 
 sol()
 print(f'{(time.time() - start_time) * 1000:.3f}ms')

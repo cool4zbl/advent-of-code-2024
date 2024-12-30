@@ -58,8 +58,6 @@ def sol():
         return None
 
     best = dijkstra(sr, sc, er, ec)
-    print('best', best)
-
 
     path = construct_path(parents, [], sr, sc, er, ec)
 

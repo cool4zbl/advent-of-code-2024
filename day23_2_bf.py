@@ -1,5 +1,4 @@
-import queue
-from collections import defaultdict, deque
+from collections import defaultdict
 import time
 
 start_time = time.time()
