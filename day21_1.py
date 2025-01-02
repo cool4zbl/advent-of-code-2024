@@ -11,9 +11,6 @@ day = 21
 input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
 
 # UDLR
-# dirs = ((-1, 0), (1, 0), (0, -1), (0, 1))
-# acts = ['^', 'v', '<', '>' ]
-# #
 dirs = ((-1, 0), (0, 1), (1, 0), (0, -1))
 acts = [ '^', '>',  'v', '<']
 
@@ -69,25 +66,17 @@ def sol():
             if v == char:
                 return k
 
-    cache_dir = defaultdict(str)
-
     @cache
     def generate(input_lst):
         rr = 'A' + input_lst
         res = []
         for i in range(1, len(rr)):
-
             sr, sc = find_pos(rr[i - 1], g2)
             er, ec = find_pos(rr[i], g2)
-            if (sr, sc, er, ec) in cache_dir:
-                path = cache_dir[(sr, sc, er, ec)]
-            else:
-                path = find_path(sr, sc, er, ec, g2)
-                # print(''.join(sorted(path)) + 'A', (sr, sc), 'to', (er, ec))
-                path = (''.join(path)
-                        .replace('<v<', 'v<<')
-                        .replace('>^>', '>>^'))
-                cache_dir[(sr, sc, er, ec)] = path
+            path = find_path(sr, sc, er, ec, g2)
+            path = (''.join(path)
+                    .replace('<v<', 'v<<')
+                    .replace('>^>', '>>^'))
             res.append(path + 'A')
         return ''.join(res)
 
@@ -119,20 +108,17 @@ def sol():
 
             res.append(path + 'A')
 
-        res = ['<<^^A' if x == '^^<<A' and i > 0 else x for i, x in enumerate(res)]
         print(res)
-        res = ''.join(res)
 
-        next_output = res
-        for i in range(2):
-            next_output = generate(next_output)
-            print(next_output)
+        for choice in res:
+            next_output = choice
+            for i in range(2):
+                next_output = generate(next_output)
 
-        length = len(next_output)
-        num = int(ss[1:4])
-        print(length, num, next_output)
-        total += length * num
-        print(total)
+            length = len(next_output)
+            num = int(ss[1:4])
+            total += length * num
+    print(total)
 
 sol()
 print(f'{(time.time() - start_time) * 1000:.3f}ms')

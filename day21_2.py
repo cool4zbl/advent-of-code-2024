@@ -2,20 +2,16 @@ from collections import defaultdict
 import time
 from functools import cache
 from heapq import heapify, heappop, heappush
-
+from itertools import permutations
 
 start_time = time.time()
 
-is_test = True
+is_test = False
 day = 21
 input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
 
-# UDLR
-# dirs = ((-1, 0), (1, 0), (0, -1), (0, 1))
-# acts = ['^', 'v', '<', '>' ]
-# #
-dirs = ((-1, 0), (0, 1), (1, 0), (0, -1))
-acts = [ '^', '>',  'v', '<']
+origin_dirs = ((0, 1, '>'), (-1, 0, '^'), (1, 0, 'v'), (0, -1, '<'))
+dirss = list(permutations(origin_dirs, 4))
 
 def build_grid(ls):
     return defaultdict(str) | {(i, j): ls[i][j] for i in range(len(ls)) for j in range(len(ls[i]))}, len(ls), len(ls[0])
@@ -24,7 +20,7 @@ def sol():
     g, m, n = build_grid([list('789'), list('456'), list('123'), list('#0A')])
     g2, _, _ = build_grid([list('#^A'), list('<v>')])
 
-    def find_path(sr, sc, er, ec, g):
+    def find_path(sr, sc, er, ec, g, dirs):
         parents = defaultdict(tuple)
 
         def dijkstra(sr, sc, er, ec, g):
@@ -40,12 +36,12 @@ def sol():
                     continue
                 closed_set.add((r, c))
                 if (r, c) != (sr, sc):
-                    parents[r, c] = (r - dirs[d][0], c - dirs[d][1], acts[d])
+                    parents[r, c] = (r - dirs[d][0], c - dirs[d][1], dirs[d][2])
 
                 if (r, c) == (er, ec):
                     return score
 
-                for idx, (dr, dc) in enumerate(dirs):
+                for idx, (dr, dc, _) in enumerate(dirs):
                     nr, nc = r + dr, c + dc
                     if g[nr, nc] and g[nr, nc] != '#':
                         new_score = score + 1
@@ -69,46 +65,60 @@ def sol():
             if v == char:
                 return k
 
-    cache_dir = defaultdict(dict)
-    # @cache
-    def generate(s_e, ts):
-        if ts <= 0:
-            return ''
-        if cache_dir[s_e].get(ts):
-            return cache_dir[s_e][ts]
-
-        s, e = s_e
+    @cache
+    def find_short_path(s, e, dirs):
         sr, sc = find_pos(s, g2)
         er, ec = find_pos(e, g2)
-        path = find_path(sr, sc, er, ec, g2)
-        path = (''.join(path)
-                .replace('<v<', 'v<<')
-                .replace('>^>', '>>^'))
-        path += 'A'
+        p = find_path(sr, sc, er, ec, g2, dirs)
 
-        ans = []
-        for i in range(0, len(path)):
-            if i == 0:
-                ans.append(generate(('A', path[0]), ts - 1))
-            else:
-                ans.append(generate((path[i-1], path[i]), ts - 1))
+        p = (''.join(p)
+             .replace('<v<', 'v<<')
+             .replace('>^>', '>>^'))
+        p += 'A'
+        return p
 
-        cache_dir[s_e][ts] = path
-        print('ans', ans)
-        return ''.join(ans)
+    def pairs_from_path(path, prefix='A'):
+        if not path:
+            return []
+        pairs = [(prefix, path[0])]
+        pairs.extend((path[i - 1], path[i]) for i in range(1, len(path)))
+        return pairs
+
+    @cache
+    def get_dir(path, dep, dirs):
+        if dep == 0:
+            ps = pairs_from_path(path, prefix='A')
+            return ''.join(find_short_path(s, e, dirs) for s, e in ps)
+
+        subpaths = []
+        if path:
+            subpaths.append('A' + path[0])
+            for i in range(1, len(path)):
+                subpaths.append(path[i-1] + path[i])
+        return ''.join(get_dir(sp, dep - 1, dirs) for sp in subpaths)
+
+    @cache
+    def generate(path_str, ts, dirs):
+        if ts <= 0:
+            return len(path_str)
+
+        t = 0
+        for p in path_str.rstrip('A').split('A'):
+            t += generate(get_dir(p + 'A', 0, dirs), ts - 1, dirs)
+        return t
 
     total = 0
     for line in open(input_file).read().splitlines():
         ss = 'A' + line
 
-        res0 = []
+        res_digit = []
+        # digit pad
         for i in range(1, len(ss)):
             sr, sc = find_pos(ss[i-1], g)
             er, ec = find_pos(ss[i], g)
 
-            path = find_path(sr, sc, er, ec, g)
+            path = find_path(sr, sc, er, ec, g, origin_dirs)
             path = (''.join(path)
-                    # .replace('^^<<', '<<^^')
                     .replace('>vv>', '>>vv')
                     .replace('>v>v', '>>vv')
                     .replace('>vvv>', '>>vvv')
@@ -123,24 +133,20 @@ def sol():
                     .replace('<^^^<', '^^^<<')
                     .replace('<^^<', '^^<<'))
 
-            res0.append(path + 'A')
+            res_digit.append(path + 'A')
 
-        res0 = ['<<^^A' if x == '^^<<A' and i > 0 else x for i, x in enumerate(res0)]
-        print(res0)
+        print(res_digit)
 
-        times = 2
-        res = []
-        res0 = 'A' + ''.join(res0)
-        for i in range(1, len(res0)):
-            next_output = generate((res0[i-1], res0[i]), times)
-            res.append(next_output)
+        times = 25
+        for choice in res_digit:
+            length = min(generate(choice, times, dirs) for dirs in dirss)
+            # so lucky
+            # length = generate(choice, times, origin_dirs)
+            num = int(ss[1:4])
+            print(length, num)
+            total += length * num
 
-        length = len(''.join(res))
-        num = int(ss[1:4])
-        print(length, num, res)
-        total += length * num
-
-    print(cache_dir)
+    # 218309335714068
     print(total)
 
 sol()
