@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+from functools import cache
 from heapq import heappush, heappop, heapify
 from utils import *
 import time

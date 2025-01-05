@@ -91,11 +91,8 @@ def sol():
             return ''.join(find_short_path(s, e, dirs) for s, e in ps)
 
         subpaths = []
-        if path:
-            subpaths.append('A' + path[0])
-            for i in range(1, len(path)):
-                subpaths.append(path[i-1] + path[i])
-        return ''.join(get_dir(sp, dep - 1, dirs) for sp in subpaths)
+        subpaths.extend(get_dir(path, dep - 1, dirs))
+        return ''.join(subpaths)
 
     @cache
     def generate(path_str, ts, dirs):
@@ -147,7 +144,7 @@ def sol():
             total += length * num
 
     # 218309335714068
-    print(total)
+    print(total, total == 218309335714068)
 
 sol()
 print(f'{(time.time() - start_time) * 1000:.3f}ms')
