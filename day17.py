@@ -6,23 +6,8 @@ day = 17
 is_test = False
 input_file = f'./input/day{day}{"_test" if is_test else ""}.txt'
 
-
-def solve_part_1():
-    with open(input_file) as f:
-        p1, p2 = f.read().split('\n\n')
-        lines = p1.split('\n')
-        register_a = int(lines[0].split(':')[1].strip())
-        register_b = int(lines[1].split(':')[1].strip())
-        register_c = int(lines[2].split(':')[1].strip())
-
-        programs = p2.split(':')[1].strip().split(',')
-        return run(programs, register_a, register_b, register_c)
-
 def run(programs, register_a, register_b, register_c):
-    # opcode,operand
     opcode_p = 0
-    operand_p = 1
-
     output = []
 
     def get_operand(operand_pointer):
@@ -37,7 +22,8 @@ def run(programs, register_a, register_b, register_c):
             return register_c
         return cur_v
 
-    while operand_p < len(programs):
+    while opcode_p + 1 < len(programs):
+        operand_p = opcode_p + 1
         opcode = programs[opcode_p]
         if opcode == '0':
             v = get_operand(operand_p)
@@ -45,7 +31,6 @@ def run(programs, register_a, register_b, register_c):
             register_a = register_a // (2 ** v)
             # print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}')
         elif opcode == '1':
-            # v = get_operand(operand_p), DO NOT need to translate!!!
             # bxl
             register_b ^= int(programs[operand_p])
             # print(f'a = {register_a}, b = {register_b}, c = {register_c}, i = {opcode_p}')
@@ -88,6 +73,17 @@ def run(programs, register_a, register_b, register_c):
         operand_p = opcode_p + 1
 
     return output
+
+def solve_part_1():
+    with open(input_file) as f:
+        p1, p2 = f.read().split('\n\n')
+        lines = p1.split('\n')
+        register_a = int(lines[0].split(':')[1].strip())
+        register_b = int(lines[1].split(':')[1].strip())
+        register_c = int(lines[2].split(':')[1].strip())
+
+        programs = p2.split(':')[1].strip().split(',')
+        return run(programs, register_a, register_b, register_c)
 
 def sol_part_2():
     with open(input_file) as f:
