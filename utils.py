@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 
 def read_integer_pairs(filepath: str) -> tuple[List[int], List[int]]:
@@ -10,7 +11,7 @@ def read_integer_pairs(filepath: str) -> tuple[List[int], List[int]]:
             lst2.append(right)
     return lst1, lst2
 
-def parse_file_to_int_list(filepath: str) -> List[int]:
+def parse_file_to_int_list(filepath: str) -> List[List[int]]:
     lst = []
     with open(filepath, 'r') as file:
         for line in file:
@@ -46,3 +47,6 @@ def construct_path(parents, path, start_r, start_c, end_r, end_c):
     path.append((r, c))
     path.reverse()
     return path
+
+def build_grid(ls):
+    return defaultdict(str) | {(i, j): ls[i][j] for i in range(len(ls)) for j in range(len(ls[i]))}, len(ls), len(ls[0])
